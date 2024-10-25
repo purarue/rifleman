@@ -13,7 +13,7 @@ from . import RifleMan, Actions, Files, IGNORE
 DESCRIPTION: str = """Pass '-' to read filenames from STDIN, separated by newlines"""
 
 CONF_RAW: str = (
-    "https://raw.githubusercontent.com/seanbreckenridge/rifleman/master/config/{}"
+    "https://raw.githubusercontent.com/purarue/rifleman/master/config/{}"
 )
 FORMAT_FNAME: str = "format.conf"
 LINT_FNAME: str = "lint.conf"

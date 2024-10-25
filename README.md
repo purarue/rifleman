@@ -120,7 +120,7 @@ All done! ✨ 🍰 ✨
 ### Tests
 
 ```bash
-git clone 'https://github.com/seanbreckenridge/rifleman'
+git clone 'https://github.com/purarue/rifleman'
 cd ./rifleman
 pip install '.[testing]'
 mypy ./rifleman
