@@ -1,6 +1,6 @@
 # rifleman
 
-[![PyPi version](https://img.shields.io/pypi/v/rifleman.svg)](https://pypi.python.org/pypi/rifleman) [![Python 3.7|3.8|3.9](https://img.shields.io/pypi/pyversions/rifleman.svg)](https://pypi.python.org/pypi/rifleman) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![PyPi version](https://img.shields.io/pypi/v/rifleman.svg)](https://pypi.python.org/pypi/rifleman) [![Python 3.9|3.10|3.11|3.12|3.13](https://img.shields.io/pypi/pyversions/rifleman.svg)](https://pypi.python.org/pypi/rifleman) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 An extendible dispatcher to lint/format code, based on [rifle](https://github.com/ranger/ranger)
 
@@ -41,7 +41,7 @@ Feel free to PR additional formatters!
 
 ## Installation
 
-Requires `python3.7+`
+Requires `python3.9+`
 
 To install with pip, run:
 
