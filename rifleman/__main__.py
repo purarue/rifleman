@@ -5,16 +5,14 @@ import json
 from pathlib import Path
 from optparse import OptionParser
 
-from typing import Optional, List
+from typing import Optional
 
 from . import RifleMan, Actions, Files, IGNORE
 
 
 DESCRIPTION: str = """Pass '-' to read filenames from STDIN, separated by newlines"""
 
-CONF_RAW: str = (
-    "https://raw.githubusercontent.com/purarue/rifleman/master/config/{}"
-)
+CONF_RAW: str = "https://raw.githubusercontent.com/purarue/rifleman/master/config/{}"
 FORMAT_FNAME: str = "format.conf"
 LINT_FNAME: str = "lint.conf"
 
@@ -28,11 +26,11 @@ def _download_configuration(url: str, to_file: Path) -> None:
     except Exception as e:
         print(str(e))
         print(
-            "Error: Could not download '{}' to '{}'...".format(url, str(to_file)),
+            f"Error: Could not download '{url}' to '{str(to_file)}'...",
             file=sys.stderr,
         )
         print(
-            "Download the file from that the URL and put it at {}".format(str(to_file))
+            f"Download the file from that the URL and put it at {str(to_file)}"
         )
         raise SystemExit(1)
 
@@ -60,7 +58,7 @@ def main() -> None:
     """Handles parsing arguments from the user"""
 
     conf_dir: Path = find_conf_dir()
-    conf_files: List[str] = [p.stem for p in Path(conf_dir).glob("*.conf")]
+    conf_files: list[str] = [p.stem for p in Path(conf_dir).glob("*.conf")]
 
     parser = OptionParser(
         usage="rifleman [-] [-ljpcah] [files]...", description=DESCRIPTION
@@ -174,7 +172,7 @@ def run(
     if print_mimetypes:
         mbuf: str = ""
         for file in files:
-            mbuf += "{}:{}\n".format(file, rfman.get_mimetype(file))
+            mbuf += f"{file}:{rfman.get_mimetype(file)}\n"
         return mbuf.strip()
 
     actions: Actions = rfman.collect_actions(files)

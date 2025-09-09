@@ -6,7 +6,8 @@ from pathlib import Path
 from subprocess import Popen, PIPE
 from collections import defaultdict
 
-from typing import Optional, List, Union, Dict, Tuple, Mapping, Set, Callable
+from typing import Optional, Union, Callable
+from collections.abc import Mapping
 
 # Options and constants that a user might want to change:
 
@@ -17,12 +18,12 @@ ENCODING = "utf-8"
 SHEBANG_LIMIT = 50
 
 IGNORE = "ignore"
-_CACHED_EXECUTABLES: Set[str] = set()
+_CACHED_EXECUTABLES: set[str] = set()
 
 PathIsh = Union[str, Path]
 Cmd = str
-Condition = Union[Tuple[str, str], Tuple[str, ...]]
-Files = List[str]
+Condition = Union[tuple[str, str], tuple[str, ...]]
+Files = list[str]
 Actions = Mapping[str, Files]
 
 
@@ -33,7 +34,7 @@ def _normalize(p: PathIsh) -> Path:
         return p
 
 
-def get_executables() -> Set[str]:
+def get_executables() -> set[str]:
     """Return all executable files in $PATH + Cache them."""
     global _CACHED_EXECUTABLES
     if bool(_CACHED_EXECUTABLES):
@@ -70,7 +71,7 @@ def get_executables() -> Set[str]:
 def extract_shebang(fname: str) -> Optional[str]:
     i: int = 0
     try:
-        with open(fname, "r") as f:
+        with open(fname) as f:
             for ln in f:
                 line = ln.strip()
                 if line.startswith("#!"):
@@ -96,7 +97,7 @@ def _is_terminal() -> bool:
 
 
 def Popen_handler(
-    cmd: List[str],
+    cmd: list[str],
     print_cmd: bool = True,
     prompt_func: Optional[Callable[[str], bool]] = None,
 ) -> Optional[int]:
@@ -105,7 +106,7 @@ def Popen_handler(
         if not prompt_func(cmd_str):
             return None
     if print_cmd:
-        print("Running: {}".format(cmd_str))
+        print(f"Running: {cmd_str}")
     return Popen(cmd).wait()
 
 
@@ -121,12 +122,12 @@ class RifleMan:
         self.config_file: Path = _normalize(config_file)
         self._initialized_mimetypes: bool = False
         # maps filenames to mimetypes
-        self._mimetypes: Dict[str, str] = {}
-        self.rules: List[Tuple[Cmd, Condition]] = []
+        self._mimetypes: dict[str, str] = {}
+        self.rules: list[tuple[Cmd, Condition]] = []
 
         # get paths for mimetype files
-        self._mimetype_known_files: List[str] = [os.path.expanduser("~/.mime.types")]
-        self._prefix: List[str] = ["/bin/sh", "-c"]
+        self._mimetype_known_files: list[str] = [os.path.expanduser("~/.mime.types")]
+        self._prefix: list[str] = ["/bin/sh", "-c"]
 
         if "PAGER" not in os.environ:
             os.environ["PAGER"] = DEFAULT_PAGER
@@ -240,7 +241,7 @@ class RifleMan:
         actions: Actions = defaultdict(list)
         for fname in files:
             if not os.path.exists(fname):
-                self.__class__.logger("Path doesn't exist: {}".format(fname))
+                self.__class__.logger(f"Path doesn't exist: {fname}")
             if not os.path.isfile(fname):  # ignore non-files
                 continue
             for cmd, tests in self.rules:
@@ -264,7 +265,7 @@ class RifleMan:
         filenames = "' '".join(
             f.replace("'", "'\\''") for f in files if "\x00" not in f
         )
-        return "set -- '%s'; %s" % (filenames, action)
+        return "set -- '{}'; {}".format(filenames, action)
 
     def execute(
         self,
