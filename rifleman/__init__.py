@@ -6,7 +6,7 @@ from pathlib import Path
 from subprocess import Popen, PIPE
 from collections import defaultdict
 
-from typing import Optional, Union
+from typing import Union
 from collections.abc import Callable
 from collections.abc import Mapping
 

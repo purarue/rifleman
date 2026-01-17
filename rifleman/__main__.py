@@ -5,7 +5,6 @@ import json
 from pathlib import Path
 from optparse import OptionParser
 
-from typing import Optional
 
 from . import RifleMan, Actions, Files, IGNORE
 
