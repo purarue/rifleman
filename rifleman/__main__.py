@@ -28,9 +28,7 @@ def _download_configuration(url: str, to_file: Path) -> None:
             f"Error: Could not download '{url}' to '{str(to_file)}'...",
             file=sys.stderr,
         )
-        print(
-            f"Download the file from that the URL and put it at {str(to_file)}"
-        )
+        print(f"Download the file from that the URL and put it at {str(to_file)}")
         raise SystemExit(1)
 
 
