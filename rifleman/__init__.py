@@ -6,7 +6,8 @@ from pathlib import Path
 from subprocess import Popen, PIPE
 from collections import defaultdict
 
-from typing import Optional, Union, Callable
+from typing import Optional, Union
+from collections.abc import Callable
 from collections.abc import Mapping
 
 # Options and constants that a user might want to change:
@@ -68,7 +69,7 @@ def get_executables() -> set[str]:
     return _CACHED_EXECUTABLES
 
 
-def extract_shebang(fname: str) -> Optional[str]:
+def extract_shebang(fname: str) -> str | None:
     i: int = 0
     try:
         with open(fname) as f:
@@ -99,8 +100,8 @@ def _is_terminal() -> bool:
 def Popen_handler(
     cmd: list[str],
     print_cmd: bool = True,
-    prompt_func: Optional[Callable[[str], bool]] = None,
-) -> Optional[int]:
+    prompt_func: Callable[[str], bool] | None = None,
+) -> int | None:
     cmd_str: str = " ".join(cmd)
     if prompt_func is not None:
         if not prompt_func(cmd_str):
@@ -134,7 +135,7 @@ class RifleMan:
         if "EDITOR" not in os.environ:
             os.environ["EDITOR"] = os.environ.get("VISUAL", DEFAULT_EDITOR)
 
-    def reload_config(self, config_file: Optional[PathIsh] = None) -> None:
+    def reload_config(self, config_file: PathIsh | None = None) -> None:
         """Replace the current configuration with the one in config_file"""
         if config_file is None:
             config_file = self.config_file
@@ -265,13 +266,13 @@ class RifleMan:
         filenames = "' '".join(
             f.replace("'", "'\\''") for f in files if "\x00" not in f
         )
-        return "set -- '{}'; {}".format(filenames, action)
+        return f"set -- '{filenames}'; {action}"
 
     def execute(
         self,
         action: str,
         files: Files,
-        prompt_func: Optional[Callable[[str], bool]] = None,
+        prompt_func: Callable[[str], bool] | None = None,
     ) -> None:
         """
         Executes the action for the given files

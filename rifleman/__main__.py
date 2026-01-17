@@ -137,7 +137,7 @@ def main() -> None:
 
     rfman = RifleMan(conf_path)
     rfman.reload_config()
-    resp: Optional[str] = run(
+    resp: str | None = run(
         rfman, options.l, options.j, options.m, options.p, positionals
     )
     if resp is not None:
@@ -164,7 +164,7 @@ def run(
     print_mimetypes: bool,
     prompt_before_executing: bool,
     files: Files,
-) -> Optional[str]:
+) -> str | None:
     # main wrapper
     # if user provided a flag to print actions
     # as a list or as JSON, returns the string to print
